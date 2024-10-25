@@ -1,0 +1,52 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "UEChat",
+  "Description": "",
+  "Category": "Utility",
+  "CreatedBy": "Takuro Sakai",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "SupportURL": "",
+  "EnabledByDefault": false,
+  "CanContainContent": true,
+  "IsBetaVersion": false,
+  "Installed": false,
+  "Modules": [
+    {
+      "Name": "UEChat",
+      "Type": "DeveloperTool",
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [
+        "Win64",
+        "PS4",
+        "PS5",
+        "XB1",
+        "XSX",
+        "Switch"
+      ],
+      "WhitelistTargetConfigurations": [
+        "Debug",
+        "DebugGame",
+        "Development",
+        "Test"
+      ]
+    },
+    {
+      "Name": "UEChatEditor",
+      "Type": "Editor",
+      "LoadingPhase": "PostDefault",
+      "WhitelistPlatforms": [
+        "Win64"
+      ],
+      "WhitelistTargetConfigurations": [
+        "Debug",
+        "DebugGame",
+        "Development",
+        "Test"
+      ]
+    }
+  ]
+}
