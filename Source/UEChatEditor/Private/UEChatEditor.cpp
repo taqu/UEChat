@@ -30,10 +30,14 @@ void FUEChatEditorModule::StartupModule()
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(TabName, Delegate)
 		.SetDisplayName(FText::FromString(TEXT("UEChat Chat Panel")))
 		.SetAutoGenerateMenuEntry(false);
+
+	GLog->AddOutputDevice(&LogOutputDevice_);
 }
 
 void FUEChatEditorModule::ShutdownModule()
 {
+	GLog->RemoveOutputDevice(&LogOutputDevice_);
+
 	FUEChatUICommands::Unregister();
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(TabName);
@@ -56,5 +60,81 @@ void FUEChatEditorModule::OpenPanel()
 }
 
 IMPLEMENT_MODULE(FUEChatEditorModule, UEChatEditor)
+
+FUEChatEditorModule::FLog::FLog()
+    :Verbosity_(ELogVerbosity::NoLogging)
+{
+}
+
+FUEChatEditorModule::FLog::FLog(ELogVerbosity::Type Verbosity, FString&& Line)
+:Verbosity_(Verbosity)
+	,Line_(MoveTemp(Line))
+
+{
+}
+
+FUEChatEditorModule::FLog::FLog(const FLog& X)
+    :Verbosity_(X.Verbosity_)
+	,Line_(X.Line_)
+{
+}
+
+FUEChatEditorModule::FLog& FUEChatEditorModule::FLog::operator=(const FLog& X)
+{
+	if(this != &X){
+		Verbosity_ = X.Verbosity_;
+		Line_ = X.Line_;
+	}
+	return *this;
+}
+
+FUEChatEditorModule::FLog::FLog(FLog&& X)
+:Verbosity_(X.Verbosity_)
+	,Line_(MoveTemp(X.Line_))
+{
+}
+
+FUEChatEditorModule::FLog& FUEChatEditorModule::FLog::operator=(FLog&& X)
+{
+	if(this != &X){
+		Verbosity_ = X.Verbosity_;
+		Line_ = MoveTemp(X.Line_);
+	}
+	return *this;
+}
+
+FUEChatEditorModule::FLogOutputDevice::FLogOutputDevice()
+{
+}
+
+FUEChatEditorModule::FLogOutputDevice::~FLogOutputDevice()
+{
+}
+
+void FUEChatEditorModule::FLogOutputDevice::Serialize(const TCHAR* V, ELogVerbosity::Type Verbosity, const FName& Category)
+{
+	if(ELogVerbosity::Warning<Verbosity){
+		return;
+	}
+	if(MaxLines<=Logs_.Size()){
+		Logs_.PopHead();
+	}
+	FString Line(V);
+	FLog Log(Verbosity, MoveTemp(Line));
+	Logs_.PushTail(MoveTemp(Log));
+}
+
+void FUEChatEditorModule::FLogOutputDevice::Serialize(const TCHAR* V, ELogVerbosity::Type Verbosity, const FName& Category, double /*Time*/)
+{
+	if(ELogVerbosity::Warning<Verbosity){
+		return;
+	}
+	if(MaxLines<=Logs_.Size()){
+		Logs_.PopHead();
+	}
+	FString Line(V);
+	FLog Log(Verbosity, MoveTemp(Line));
+	Logs_.PushTail(MoveTemp(Log));
+}
 
 #undef LOCTEXT_NAMESPACE

@@ -20,12 +20,7 @@
       "Type": "DeveloperTool",
       "LoadingPhase": "Default",
       "WhitelistPlatforms": [
-        "Win64",
-        "PS4",
-        "PS5",
-        "XB1",
-        "XSX",
-        "Switch"
+        "Win64"
       ],
       "WhitelistTargetConfigurations": [
         "Debug",
