@@ -6,6 +6,8 @@ namespace UnrealBuildTool.Rules
         public UEChatEditor(ReadOnlyTargetRules Target) : base(Target)
         {
             PCHUsage = PCHUsageMode.NoSharedPCHs;
+            PrivatePCHHeaderFile = "Private/UEChatEditorPrivatePCH.h";
+            CppStandard = CppStandardVersion.Cpp20;
 
             PublicIncludePaths.AddRange(
                 new string[] {

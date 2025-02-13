@@ -158,6 +158,7 @@ void FUEChatPanel::SChatView::Send()
 	StringBuilder_.Append(Text.ToString());
 	StringBuilder_.AppendChar(TEXT('\n'));
 	TextBlock_->SetText(FText::FromString(StringBuilder_.ToString()));
+	EditBox_->ClearContent();
 }
 
 void FUEChatPanel::SChatView::OnComplete(bool Status, const FString& Message)
@@ -363,7 +364,7 @@ TSharedRef<SWidget> FUEChatPanel::GeneratePanelContent()
 		// clang-format on
 		AddTab(TEXT("Chat"), Widget);
 	}
-
+#if 0
 	{
 		// clang-format off
 		// coverity[uninit_use_in_call]
@@ -374,6 +375,7 @@ TSharedRef<SWidget> FUEChatPanel::GeneratePanelContent()
 		// clang-format on
 		AddTab(TEXT("ChatWithLog"), Widget);
 	}
+#endif
 	OnClickTab(0);
 	return ContentWidget;
 }
